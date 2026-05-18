@@ -275,7 +275,7 @@ public class Customer extends crmDriver {
 					util.enterTextById("nominee_address1", nomineeAdd1);
 					util.enterTextById("nominee_address2", nomineeAdd2);
 
-					((JavascriptExecutor) driver).executeScript("window.scrollBy(0, 600);");
+					((JavascriptExecutor) driver).executeScript("window.scrollBy(0, 300);");
 					Thread.sleep(1000);
 
 					if (PanNo != null && !PanNo.trim().isEmpty()) {
@@ -285,13 +285,13 @@ public class Customer extends crmDriver {
 					}
 
 					if (VoterId != null && !VoterId.trim().isEmpty()) {
-						util.enterTextById("voteridno", VoterId);
+						util.enterTextById("voterid", VoterId);
 						driver.findElement(By.id("voter_proof"))
 								.sendKeys(path + "\\" + nominieeImage + ".jpg");
 					}
 
 					if (rationCard != null && !rationCard.trim().isEmpty()) {
-						util.enterTextById("rationcardno", rationCard);
+						util.enterTextById("rationcard", rationCard);
 						driver.findElement(By.id("ration_proof"))
 								.sendKeys(path + "\\" + nominieeImage + ".jpg");
 					}
