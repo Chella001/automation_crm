@@ -56,7 +56,21 @@ public class crmFunctions extends crmDriver {
 		try {
 			WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(id)));
 			element.clear();
-			element.sendKeys(text);
+			try {
+				element.sendKeys(text);
+				Thread.sleep(200);
+			} catch (Exception se) {
+				// fallback to Javascript
+			}
+			String val = element.getAttribute("value");
+			if (val == null || val.trim().isEmpty()) {
+				((JavascriptExecutor) driver).executeScript(
+					"arguments[0].value = arguments[1]; " +
+					"arguments[0].dispatchEvent(new Event('input')); " +
+					"arguments[0].dispatchEvent(new Event('change'));", 
+					element, text
+				);
+			}
 		} catch (Exception e) {
 			System.out.println("Text entry failed for ID: " + id);
 		}
@@ -66,7 +80,21 @@ public class crmFunctions extends crmDriver {
 		try {
 			WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(xpath)));
 			element.clear();
-			element.sendKeys(text);
+			try {
+				element.sendKeys(text);
+				Thread.sleep(200);
+			} catch (Exception se) {
+				// fallback to Javascript
+			}
+			String val = element.getAttribute("value");
+			if (val == null || val.trim().isEmpty()) {
+				((JavascriptExecutor) driver).executeScript(
+					"arguments[0].value = arguments[1]; " +
+					"arguments[0].dispatchEvent(new Event('input')); " +
+					"arguments[0].dispatchEvent(new Event('change'));", 
+					element, text
+				);
+			}
 		} catch (Exception e) {
 			System.out.println("Text entry failed for Xpath: " + xpath);
 		}

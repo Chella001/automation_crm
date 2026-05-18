@@ -16,8 +16,9 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
-//import org.openqa.selenium.support.ui.ExpectedConditions;
-//import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.support.ui.Select;
 
 import utilsCrm.crmFunctions;
 import utilsCrm.crmUtils;
@@ -368,8 +369,21 @@ public class Payment extends crmDriver {
 							// ================= KYC FLOW =================
 							Thread.sleep(1000);
 							try {
-								if (driver.findElements(By.id("kyc_collection_modal")).size() > 0 &&
-										driver.findElement(By.id("kyc_collection_modal")).isDisplayed()) {
+								boolean isModalPresent = false;
+								try {
+									WebDriverWait shortWait = new WebDriverWait(driver,
+											java.time.Duration.ofSeconds(5));
+									shortWait.until(ExpectedConditions.or(
+											ExpectedConditions
+													.visibilityOfElementLocated(By.id("kyc_collection_modal")),
+											ExpectedConditions
+													.visibilityOfElementLocated(By.id("kycCollectionModalLabel"))));
+									isModalPresent = true;
+								} catch (Exception e) {
+									isModalPresent = false;
+								}
+
+								if (isModalPresent) {
 
 									boolean hasPan = (panNo != null && !panNo.trim().isEmpty());
 									boolean hasAadhar = (aadharNo != null && !aadharNo.trim().isEmpty());
