@@ -146,6 +146,14 @@ public class crmFunctions extends crmDriver {
 		return pan.trim().matches("^[a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}$");
 	}
 
+	// Aadhaar Validation
+	public static boolean isValidAadhar(String aadhar) {
+		if (aadhar == null)
+			return false;
+		String trimmed = aadhar.trim();
+		return trimmed.matches("^\\d{12}$") || trimmed.matches("^\\d{4}\\s\\d{4}\\s\\d{4}$");
+	}
+
 
 	// ================= EMPLOYEE CODE VALIDATION =================
 	public static boolean isValidEmployeeCode(String empCode) {
