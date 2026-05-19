@@ -286,13 +286,13 @@ public class Customer extends crmDriver {
 
 					if (VoterId != null && !VoterId.trim().isEmpty()) {
 						util.enterTextById("voterid", VoterId);
-						driver.findElement(By.id("voter_proof"))
+						driver.findElement(By.id("voterid_proof"))
 								.sendKeys(path + "\\" + nominieeImage + ".jpg");
 					}
 
 					if (rationCard != null && !rationCard.trim().isEmpty()) {
 						util.enterTextById("rationcard", rationCard);
-						driver.findElement(By.id("ration_proof"))
+						driver.findElement(By.id("rationcard_proof"))
 								.sendKeys(path + "\\" + nominieeImage + ".jpg");
 					}
 
