@@ -80,7 +80,7 @@ public class Designation extends crmDriver {
                     String addMessage = util.getSuccessMessage(
                             "/html/body/div/div[1]/section[2]/div/div/div/div[2]/div[1]");
 
-                    if (addMessage != null && addMessage.toLowerCase().contains("add")) {
+                    if (addMessage != null && addMessage.toLowerCase().contains("added successfully")) {
                         addSuccess = true;
                         test.pass("Designation Added Successfully : " + Designation);
                     } else {
@@ -102,8 +102,7 @@ public class Designation extends crmDriver {
 
                 // ================= DELETE =================
                 if (delete.equalsIgnoreCase("Yes")) {
-                    String deptToDelete =
-                            edit.equalsIgnoreCase("Yes") ? editDesignation : Designation;
+                    String deptToDelete = edit.equalsIgnoreCase("Yes") ? editDesignation : Designation;
                     deleteSuccess = DesignationDelete(deptToDelete);
                 }
 
