@@ -602,6 +602,11 @@ public class Payment extends crmDriver {
 					addSuccess = false;
 					crmFunctions.captureScreenshot("Payment_Add_Error_" + TC_ID);
 					test.fail("Unexpected Exception in Payment Add");
+					try {
+						driver.navigate().refresh();
+						Thread.sleep(1500);
+					} catch (Exception ex) {
+					}
 				}
 
 				finalStatus = addSuccess;
@@ -619,6 +624,11 @@ public class Payment extends crmDriver {
 				allSuccess = false;
 				crmFunctions.captureScreenshot("Payment_Main_Error");
 				test.fail("Unexpected Exception in Payment Main");
+				try {
+					driver.navigate().refresh();
+					Thread.sleep(1500);
+				} catch (Exception ex) {
+				}
 			}
 		}
 
