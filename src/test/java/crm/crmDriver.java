@@ -148,7 +148,7 @@ public class crmDriver {
 						case "profession":
 							Profession prof = new Profession();
 							int profLastRow = xlutil.returnLastRowNo("Profession", workbook);
-							status = prof.Profession(workbook, profLastRow);
+							status = prof.profession(workbook, profLastRow);
 							xlutil.updateSummaryToMaster(workbook, "Profession", Excelpath);
 							break;
 

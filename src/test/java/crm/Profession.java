@@ -23,7 +23,7 @@ public class Profession extends crmDriver {
 		return row.getCell(cellIndex).toString().trim();
 	}
 
-	public boolean Profession(Workbook workbook, int lastRow) throws InterruptedException {
+	public boolean profession(Workbook workbook, int lastRow) throws InterruptedException {
 
 		Sheet sheet = workbook.getSheet("Profession");
 		boolean allSuccess = true;
