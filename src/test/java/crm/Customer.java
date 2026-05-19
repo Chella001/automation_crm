@@ -71,13 +71,7 @@ public class Customer extends crmDriver {
 			String nomineeNumber = getCellValue(row, 30);
 			String nomineeAdd1 = getCellValue(row, 31);
 			String nomineeAdd2 = getCellValue(row, 32);
-
-			// Document numbers - CORRECTED column indices
 			String Password = getCellValue(row, 33);
-			// String PanNo = getCellValue(row, 34);
-			// String VoterId = getCellValue(row, 35);
-			// String rationCard = getCellValue(row, 36);
-
 			String edit = getCellValue(row, 34);
 			String delete = getCellValue(row, 35);
 			String editCustomer = getCellValue(row, 36);
