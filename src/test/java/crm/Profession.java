@@ -87,7 +87,7 @@ public class Profession extends crmDriver {
 						test.pass("Profession Added Successfully : " + Profession);
 					} else {
 						crmFunctions.captureScreenshot("Add_Profession_Failed_" + TC_ID);
-						util.clickByXpath("//*[@id=\"confirm-add\"]/div/div/div[3]/button");
+						util.clickByXpath("//div[@id='confirm-add']//button[text()='Close']");
 						addSuccess = false;
 						test.fail("Profession Add Failed : " + Profession);
 					}
