@@ -75,6 +75,17 @@ public class Profession extends crmDriver {
 				// ================= ADD =================
 				util.clickById("add_professions");
 				util.enterTextByXpath("//*[@id=\"profession\"]", Profession);
+
+				// CLEAR previous success message from the DOM to avoid stale verification from previous test cases
+				try {
+					((JavascriptExecutor) driver).executeScript(
+						"var elem = document.evaluate('/html/body/div/div[1]/section[2]/div/div/div/div[2]/div[1]', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;" +
+						"if (elem) elem.innerHTML = '';"
+					);
+				} catch (Exception e) {
+					// Ignore if not present
+				}
+
 				util.clickById("add_profession");
 				Thread.sleep(2000);
 
