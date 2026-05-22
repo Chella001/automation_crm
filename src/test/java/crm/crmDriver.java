@@ -26,13 +26,8 @@ public class crmDriver {
 	public static WebDriverWait wait;
 	public static Workbook workbook;
 
-	// public static String Excelpath =
-	// "C:\\Users\\Chella\\eclipse-workspace\\mavenCrm\\crmSource.xlsx"; "Source"
+	public static String Excelpath = "C:\\Users\\Chella\\eclipse-workspace\\mavenCrm\\kalarakal.xlsx";
 
-	// public static String Excelpath =
-	public static String Excelpath = "C:\\Users\\Chella\\eclipse-workspace\\mavenCrm\\udhaya.xlsx";
-	// public static String Excelpath = "C:\\Users\\Chella\\Downloads\\DCNM.xlsx";
-	// // DCNM
 	public static ExtentReports extent;
 	public static ExtentTest test;
 	public static ExtentSparkReporter sparkReporter;

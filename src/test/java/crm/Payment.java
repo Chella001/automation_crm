@@ -156,7 +156,6 @@ public class Payment extends crmDriver {
 			boolean addSuccess = false;
 			boolean finalStatus;
 
-			// ================= EXTENT =================
 			test = extent.createTest(TC_ID, "Payment Test");
 			test.info("Payment Test Started for TC_ID : " + TC_ID);
 
