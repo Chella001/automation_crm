@@ -185,21 +185,16 @@ public class createAccount extends crmDriver {
 
 				}
 
-				util.clickById("submit");
-				Thread.sleep(2000);
-
-				// ================= KYC FLOW (AFTER SAVE) =================
-				kycHandler.handleKycModal(panNo, panFront, panBack, aadharNo, aadharFront, aadharBack, imagePath);
-
 				if (Employee != null && !Employee.isEmpty()) {
 					util.clickByXpath("//*[@id=\"select2-employee_select-container\"]");
 					util.enterTextByXpath("//input[@class='select2-search__field']", Employee);
 					driver.findElement(By.xpath("//input[@class='select2-search__field']")).sendKeys(Keys.ENTER);
 				}
 
-				// Click on the main submit/save button again to finalize
 				util.clickById("submit");
 				Thread.sleep(2000);
+
+				kycHandler.handleKycModal(panNo, panFront, panBack, aadharNo, aadharFront, aadharBack, imagePath);
 
 				String success = util.getSuccessMessage("/html/body/div/div[1]/section[1]/h1");
 
