@@ -27,6 +27,7 @@ public class Payment extends crmDriver {
 
 	crmUtils exUtil = new crmUtils();
 	crmFunctions util = new crmFunctions();
+	KycHandler kycHandler = new KycHandler();
 
 	// ================= CELL VALUE =================
 	private String getCellValue(Row row, int cellIndex) {
@@ -199,28 +200,51 @@ public class Payment extends crmDriver {
 					Thread.sleep(2000);
 
 					util.clickById("select2-scheme_account-container");
-					util.enterTextByXpath("/html/body/span/span/span[1]/input", financialCode);
-					driver.findElement(By.xpath("/html/body/span/span/span[1]/input")).sendKeys(Keys.ENTER);
+					util.enterTextByXpath("//input[@class='select2-search__field']", financialCode);
+					driver.findElement(By.xpath("//input[@class='select2-search__field']")).sendKeys(Keys.ENTER);
 
 					Thread.sleep(1000);
 					util.clickById("select2-branch_select-container");
-					util.enterTextByXpath("/html/body/span/span/span[1]/input", Branch);
-					driver.findElement(By.xpath("/html/body/span/span/span[1]/input")).sendKeys(Keys.ENTER);
+					util.enterTextByXpath("//input[@class='select2-search__field']", Branch);
+					driver.findElement(By.xpath("//input[@class='select2-search__field']")).sendKeys(Keys.ENTER);
 
 					Thread.sleep(1000);
 					util.clickById("select2-employee_select-container");
-					util.enterTextByXpath("/html/body/span/span/span[1]/input", Employee);
-					driver.findElement(By.xpath("/html/body/span/span/span[1]/input")).sendKeys(Keys.ENTER);
+					util.enterTextByXpath("//input[@class='select2-search__field']", Employee);
+					driver.findElement(By.xpath("//input[@class='select2-search__field']")).sendKeys(Keys.ENTER);
 
 					JavascriptExecutor js = (JavascriptExecutor) driver;
 					js.executeScript("window.scrollBy(0, 500);");
 
-					String boardRateRaw = util.getSuccessMessage("/html/body/div/header/nav/div/ul/li[6]/a/span[2]/b");
 					double boardRate = 0.0;
-					if (boardRateRaw != null) {
-						String boardRateClean = boardRateRaw.replaceAll("[^0-9.]", "");
-						if (!boardRateClean.isEmpty()) {
-							boardRate = Double.parseDouble(boardRateClean);
+					if (schemeType != null && schemeType.toLowerCase().contains("silver")) {
+						try {
+							WebElement rateDropdown = driver
+									.findElement(By.xpath("//li[contains(@class, 'rate_block_button')]"));
+							if (!rateDropdown.getAttribute("class").contains("open")) {
+								rateDropdown.click();
+								Thread.sleep(500);
+							}
+							String silverRateRaw = driver
+									.findElement(By.xpath("//th[contains(text(), 'Silver 1gm')]/following-sibling::td"))
+									.getText();
+							if (silverRateRaw != null) {
+								String boardRateClean = silverRateRaw.replaceAll("[^0-9.]", "");
+								if (!boardRateClean.isEmpty()) {
+									boardRate = Double.parseDouble(boardRateClean);
+								}
+							}
+						} catch (Exception e) {
+							System.out.println("Failed to fetch silver board rate: " + e.getMessage());
+						}
+					} else {
+						String boardRateRaw = util
+								.getSuccessMessage("/html/body/div/header/nav/div/ul/li[6]/a/span[2]/b");
+						if (boardRateRaw != null) {
+							String boardRateClean = boardRateRaw.replaceAll("[^0-9.]", "");
+							if (!boardRateClean.isEmpty()) {
+								boardRate = Double.parseDouble(boardRateClean);
+							}
 						}
 					}
 					System.out.println("Board Rate: " + boardRate);
@@ -258,6 +282,9 @@ public class Payment extends crmDriver {
 							break;
 
 						case "FlexibleAmount":
+							amtClear.clear();
+							util.enterTextById("total_amt", flexible);
+							util.clickById("proced");
 							break;
 
 						case "amountToWeightBOA":
@@ -271,6 +298,7 @@ public class Payment extends crmDriver {
 							break;
 
 						case "DigiGold":
+						case "DigiSilver":
 							amtClear.clear();
 							util.enterTextById("total_amt", flexible);
 							util.clickById("proced");
@@ -359,7 +387,7 @@ public class Payment extends crmDriver {
 
 								||
 
-								("DigiGold".equalsIgnoreCase(schemeType)
+								(("DigiGold".equalsIgnoreCase(schemeType) || "DigiSilver".equalsIgnoreCase(schemeType))
 										&& Double.parseDouble(paidWeight.trim()) == truncatedWeight
 										&& Double.parseDouble(benfAmt) == benefitAmount
 										&& benefitWeightValue == calculatedBenefitWeight)) {
@@ -368,111 +396,11 @@ public class Payment extends crmDriver {
 
 							// ================= KYC FLOW =================
 							Thread.sleep(1000);
-							try {
-								boolean isModalPresent = false;
-								try {
-									WebDriverWait shortWait = new WebDriverWait(driver,
-											java.time.Duration.ofSeconds(5));
-									shortWait.until(ExpectedConditions.or(
-											ExpectedConditions
-													.visibilityOfElementLocated(By.id("kyc_collection_modal")),
-											ExpectedConditions
-													.visibilityOfElementLocated(By.id("kycCollectionModalLabel"))));
-									isModalPresent = true;
-								} catch (Exception e) {
-									isModalPresent = false;
-								}
-
-								if (isModalPresent) {
-
-									boolean hasPan = (panNo != null && !panNo.trim().isEmpty());
-									boolean hasAadhar = (aadharNo != null && !aadharNo.trim().isEmpty());
-
-									boolean isPanTabDisplayed = driver
-											.findElements(By.xpath("//a[contains(text(),'PAN')]")).size() > 0 &&
-											driver.findElement(By.xpath("//a[contains(text(),'PAN')]")).isDisplayed();
-
-									boolean isAadharTabDisplayed = driver
-											.findElements(By.xpath("//a[contains(text(),'AADHAR')]")).size() > 0 &&
-											driver.findElement(By.xpath("//a[contains(text(),'AADHAR')]"))
-													.isDisplayed();
-
-									boolean filledAny = false;
-
-									// 1. Check and fill PAN if it is displayed on the UI and present in Excel
-									if (isPanTabDisplayed && hasPan) {
-										test.info("KYC PAN Tab is displayed. Validating Excel PAN: " + panNo);
-										if (crmFunctions.isValidPan(panNo)) {
-											try {
-												driver.findElement(By.xpath("//a[contains(text(),'PAN')]")).click();
-												Thread.sleep(1000);
-											} catch (Exception e) {
-												System.out.println("PAN tab click failed");
-											}
-											util.enterTextByXpath("//input[@name='kyc_dynamic[1][pan_no]']", panNo);
-											if (panFront != null && !panFront.isEmpty()) {
-												driver.findElement(By.id("kyc_file_1_pan_front_img"))
-														.sendKeys(imagePath + "\\" + panFront + ".jpg");
-											}
-											if (panBack != null && !panBack.isEmpty()) {
-												driver.findElement(By.id("kyc_file_1_pan_back_img"))
-														.sendKeys(imagePath + "\\" + panBack + ".jpg");
-											}
-											filledAny = true;
-										} else {
-											test.fail("Invalid PAN format: " + panNo + ". Refreshing and continuing.");
-											driver.navigate().refresh();
-											continue;
-										}
-									}
-
-									// 2. Check and fill Aadhaar if it is displayed on the UI and present in Excel
-									if (isAadharTabDisplayed && hasAadhar) {
-										test.info("KYC AADHAR Tab is displayed. Validating Excel Aadhaar: " + aadharNo);
-										if (crmFunctions.isValidAadhar(aadharNo)) {
-											try {
-												driver.findElement(By.xpath("//a[contains(text(),'AADHAR')]")).click();
-												Thread.sleep(1000);
-											} catch (Exception e) {
-												System.out.println("AADHAR tab click failed");
-											}
-											String formattedAadhar = aadharNo.trim();
-											if (formattedAadhar.matches("^\\d{12}$")) {
-												formattedAadhar = formattedAadhar.substring(0, 4) + " " +
-														formattedAadhar.substring(4, 8) + " " +
-														formattedAadhar.substring(8, 12);
-											}
-											util.enterTextByXpath("//input[@name='kyc_dynamic[2][aadhar_no]']",
-													formattedAadhar);
-											if (aadharFront != null && !aadharFront.isEmpty()) {
-												driver.findElement(By.id("kyc_file_2_aadhar_front_img"))
-														.sendKeys(imagePath + "\\" + aadharFront + ".jpg");
-											}
-											if (aadharBack != null && !aadharBack.isEmpty()) {
-												driver.findElement(By.id("kyc_file_2_aadhar_back_img"))
-														.sendKeys(imagePath + "\\" + aadharBack + ".jpg");
-											}
-											filledAny = true;
-										} else {
-											test.fail("Invalid Aadhaar format: " + aadharNo
-													+ ". Refreshing and continuing.");
-											driver.navigate().refresh();
-											continue;
-										}
-									}
-
-									// 3. Save if we filled any document
-									if (filledAny) {
-										util.clickById("btn_save_dynamic_kyc_modal");
-										Thread.sleep(2000);
-										test.pass("KYC Documents Submitted Successfully");
-									} else {
-										test.warning("KYC modal displayed, but no valid matching data was filled.");
-									}
-								}
-							} catch (Exception kycEx) {
-								test.info(
-										"KYC Modal not displayed or error occurred. Proceeding with normal execution.");
+							boolean kycSuccess = kycHandler.handleKycModal(panNo, panFront, panBack, aadharNo,
+									aadharFront, aadharBack, imagePath);
+							if (!kycSuccess) {
+								driver.navigate().refresh();
+								continue;
 							}
 
 						}
@@ -551,7 +479,8 @@ public class Payment extends crmDriver {
 												|| "amountToWeightBOW".equalsIgnoreCase(schemeType))
 												&& safeParseDouble(paidWeight) == truncatedWeight)
 										||
-										("DigiGold".equalsIgnoreCase(schemeType)
+										(("DigiGold".equalsIgnoreCase(schemeType)
+												|| "DigiSilver".equalsIgnoreCase(schemeType))
 												&& safeParseDouble(paidWeight) == truncatedWeight
 												&& safeParseDouble(benfAmt) == benefitAmount
 												&& benefitWeightValue == calculatedBenefitWeight)

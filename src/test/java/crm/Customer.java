@@ -123,8 +123,8 @@ public class Customer extends crmDriver {
 							"$(\"input[name='customer[cus_type]'][value='1']\").prop('checked', true).trigger('change');");
 
 					util.clickByXpath("(//span[@role='presentation'])[1]");
-					util.enterTextByXpath("/html/body/span/span/span[1]/input", Title);
-					driver.findElement(By.xpath("/html/body/span/span/span[1]/input")).sendKeys(Keys.ENTER);
+					util.enterTextByXpath("//input[@class='select2-search__field']", Title);
+					driver.findElement(By.xpath("//input[@class='select2-search__field']")).sendKeys(Keys.ENTER);
 					util.enterTextById("firstname", firstName);
 					util.enterTextById("lastname", lastName);
 				}
@@ -135,8 +135,8 @@ public class Customer extends crmDriver {
 							"$(\"input[name='customer[cus_type]'][value='2']\").prop('checked', true).trigger('change');");
 
 					util.clickByXpath("(//span[@role='presentation'])[1]");
-					util.enterTextByXpath("/html/body/span/span/span[1]/input", Title);
-					driver.findElement(By.xpath("/html/body/span/span/span[1]/input")).sendKeys(Keys.ENTER);
+					util.enterTextByXpath("//input[@class='select2-search__field']", Title);
+					driver.findElement(By.xpath("//input[@class='select2-search__field']")).sendKeys(Keys.ENTER);
 
 					util.enterTextById("firstname", companyName);
 					util.enterTextById("gst_number", GSTnumber);
@@ -145,8 +145,8 @@ public class Customer extends crmDriver {
 				util.enterTextById("mobile", Mobile);
 
 				util.clickByXpath("//*[@id=\"profess\"]/div/span/span[1]/span/span[2]");
-				util.enterTextByXpath("/html/body/span/span/span[1]/input", Profession);
-				driver.findElement(By.xpath("/html/body/span/span/span[1]/input")).sendKeys(
+				util.enterTextByXpath("//input[@class='select2-search__field']", Profession);
+				driver.findElement(By.xpath("//input[@class='select2-search__field']")).sendKeys(
 						Keys.ENTER);
 
 				// System.out.println(Password);
@@ -161,19 +161,19 @@ public class Customer extends crmDriver {
 				util.enterTextById("address3", Address3);
 
 				util.clickByXpath("//*[@id=\"select2-country-container\"]");
-				util.enterTextByXpath("/html/body/span/span/span[1]/input", Country);
+				util.enterTextByXpath("//input[@class='select2-search__field']", Country);
 
-				driver.findElement(By.xpath("/html/body/span/span/span[1]/input"))
+				driver.findElement(By.xpath("//input[@class='select2-search__field']"))
 						.sendKeys(Keys.ARROW_DOWN);
-				driver.findElement(By.xpath("/html/body/span/span/span[1]/input")).sendKeys(Keys.ENTER);
+				driver.findElement(By.xpath("//input[@class='select2-search__field']")).sendKeys(Keys.ENTER);
 
 				util.clickByXpath("//*[@id=\"tab_1\"]/div[1]/div[5]/div[2]/div/span/span[1]/span/span[2]");
-				util.enterTextByXpath("/html/body/span/span/span[1]/input", State);
-				driver.findElement(By.xpath("/html/body/span/span/span[1]/input")).sendKeys(Keys.ENTER);
+				util.enterTextByXpath("//input[@class='select2-search__field']", State);
+				driver.findElement(By.xpath("//input[@class='select2-search__field']")).sendKeys(Keys.ENTER);
 
 				util.clickByXpath("//*[@id=\"tab_1\"]/div[1]/div[5]/div[3]/div/span/span[1]/span/span[2]");
-				util.enterTextByXpath("/html/body/span/span/span[1]/input", City);
-				driver.findElement(By.xpath("/html/body/span/span/span[1]/input")).sendKeys(Keys.ENTER);
+				util.enterTextByXpath("//input[@class='select2-search__field']", City);
+				driver.findElement(By.xpath("//input[@class='select2-search__field']")).sendKeys(Keys.ENTER);
 				Thread.sleep(1000);
 				((JavascriptExecutor) driver).executeScript("window.scrollBy(0, 500);");
 				Thread.sleep(1000);
@@ -280,12 +280,14 @@ public class Customer extends crmDriver {
 
 					if (VoterId != null && !VoterId.trim().isEmpty()) {
 						util.enterTextById("voterid", VoterId);
+						Thread.sleep(2000);
 						driver.findElement(By.id("voterid_proof"))
 								.sendKeys(path + "\\" + nominieeImage + ".jpg");
 					}
 
 					if (rationCard != null && !rationCard.trim().isEmpty()) {
 						util.enterTextById("rationcard", rationCard);
+						Thread.sleep(2000);
 						driver.findElement(By.id("rationcard_proof"))
 								.sendKeys(path + "\\" + nominieeImage + ".jpg");
 					}

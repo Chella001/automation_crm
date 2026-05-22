@@ -39,6 +39,10 @@ public class crmDriver {
 
 	public void setup() throws IOException, InterruptedException {
 
+		// Suppress Selenium CDP, ChromiumDriver, and other console warnings
+		java.util.logging.Logger.getLogger("org.openqa.selenium").setLevel(java.util.logging.Level.SEVERE);
+		System.setProperty("webdriver.chrome.silentOutput", "true");
+
 		// Extent Report setup
 		sparkReporter = new ExtentSparkReporter("crmAutomationReport.html");
 		extent = new ExtentReports();
@@ -123,66 +127,74 @@ public class crmDriver {
 					// Start time for each function
 					long fnStart = System.currentTimeMillis();
 
-					switch (functionName.toLowerCase()) {
+					try {
+						switch (functionName.toLowerCase()) {
 
-						case "login":
-							int loginLastRow = xlutil.returnLastRowNo("Login", workbook);
-							status = log.LoginPage(driver, workbook, loginLastRow);
-							xlutil.updateSummaryToMaster(workbook, "Login", Excelpath);
-							break;
+							case "login":
+								int loginLastRow = xlutil.returnLastRowNo("Login", workbook);
+								status = log.LoginPage(driver, workbook, loginLastRow);
+								xlutil.updateSummaryToMaster(workbook, "Login", Excelpath);
+								break;
 
-						case "department":
-							department dep = new department();
-							int depLastRow = xlutil.returnLastRowNo("Department", workbook);
-							status = dep.department(workbook, depLastRow);
-							xlutil.updateSummaryToMaster(workbook, "Department", Excelpath);
-							break;
+							case "department":
+								department dep = new department();
+								int depLastRow = xlutil.returnLastRowNo("Department", workbook);
+								status = dep.department(workbook, depLastRow);
+								xlutil.updateSummaryToMaster(workbook, "Department", Excelpath);
+								break;
 
-						case "designation":
-							Designation des = new Designation();
-							int desLastRow = xlutil.returnLastRowNo("Designation", workbook);
-							status = des.Designation(workbook, desLastRow);
-							xlutil.updateSummaryToMaster(workbook, "Designation", Excelpath);
-							break;
+							case "designation":
+								Designation des = new Designation();
+								int desLastRow = xlutil.returnLastRowNo("Designation", workbook);
+								status = des.Designation(workbook, desLastRow);
+								xlutil.updateSummaryToMaster(workbook, "Designation", Excelpath);
+								break;
 
-						case "profession":
-							Profession prof = new Profession();
-							int profLastRow = xlutil.returnLastRowNo("Profession", workbook);
-							status = prof.profession(workbook, profLastRow);
-							xlutil.updateSummaryToMaster(workbook, "Profession", Excelpath);
-							break;
+							case "profession":
+								Profession prof = new Profession();
+								int profLastRow = xlutil.returnLastRowNo("Profession", workbook);
+								status = prof.profession(workbook, profLastRow);
+								xlutil.updateSummaryToMaster(workbook, "Profession", Excelpath);
+								break;
 
-						case "customer":
-							Customer cust = new Customer();
-							int custLastRow = xlutil.returnLastRowNo("Customer", workbook);
-							status = cust.Customer(workbook, custLastRow);
-							xlutil.updateSummaryToMaster(workbook, "Customer", Excelpath);
-							break;
+							case "customer":
+								Customer cust = new Customer();
+								int custLastRow = xlutil.returnLastRowNo("Customer", workbook);
+								status = cust.Customer(workbook, custLastRow);
+								xlutil.updateSummaryToMaster(workbook, "Customer", Excelpath);
+								break;
 
-						case "employee":
-							Employee emp = new Employee();
-							int empLastRow = xlutil.returnLastRowNo("Employee", workbook);
-							status = emp.Employee(workbook, empLastRow);
-							xlutil.updateSummaryToMaster(workbook, "Employee", Excelpath);
-							break;
+							case "employee":
+								Employee emp = new Employee();
+								int empLastRow = xlutil.returnLastRowNo("Employee", workbook);
+								status = emp.Employee(workbook, empLastRow);
+								xlutil.updateSummaryToMaster(workbook, "Employee", Excelpath);
+								break;
 
-						case "createaccount":
-							createAccount acc = new createAccount();
-							int accLastRow = xlutil.returnLastRowNo("createAccount", workbook);
-							status = acc.createAccount(workbook, accLastRow);
-							xlutil.updateSummaryToMaster(workbook, "createAccount", Excelpath);
-							break;
+							case "createaccount":
+								createAccount acc = new createAccount();
+								int accLastRow = xlutil.returnLastRowNo("createAccount", workbook);
+								status = acc.createAccount(workbook, accLastRow);
+								xlutil.updateSummaryToMaster(workbook, "createAccount", Excelpath);
+								break;
 
-						case "payment":
-							Payment pay = new Payment();
-							int payLastRow = xlutil.returnLastRowNo("Payment", workbook);
-							status = pay.Payment(workbook, payLastRow);
-							xlutil.updateSummaryToMaster(workbook, "Payment", Excelpath);
-							break;
+							case "payment":
+								Payment pay = new Payment();
+								int payLastRow = xlutil.returnLastRowNo("Payment", workbook);
+								status = pay.Payment(workbook, payLastRow);
+								xlutil.updateSummaryToMaster(workbook, "Payment", Excelpath);
+								break;
 
-						default:
-							System.out.println("No matching function: " + functionName);
-							break;
+							default:
+								System.out.println("No matching function: " + functionName);
+								break;
+						}
+					} catch (Exception e) {
+						System.err.println("Error executing test case: " + functionName);
+						e.printStackTrace();
+						if (test != null) {
+							test.fail("Execution of module '" + functionName + "' failed: " + e.getMessage());
+						}
 					}
 
 					// End time for each function

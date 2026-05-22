@@ -43,7 +43,24 @@
     <groupId>com.fasterxml.jackson.core</groupId>
     <artifactId>jackson-databind</artifactId>
     <version>2.20.0</version>
-</dependency>  
+</dependency>
+<!-- SLF4J NOP Logger to satisfy SLF4J provider and silence all SLF4J warning messages -->
+<dependency>
+    <groupId>org.slf4j</groupId>
+    <artifactId>slf4j-nop</artifactId>
+    <version>2.0.16</version>
+</dependency>
+<!-- Log4j API and Core to resolve Log4j provider error -->
+<dependency>
+    <groupId>org.apache.logging.log4j</groupId>
+    <artifactId>log4j-api</artifactId>
+    <version>2.24.1</version>
+</dependency>
+<dependency>
+    <groupId>org.apache.logging.log4j</groupId>
+    <artifactId>log4j-core</artifactId>
+    <version>2.24.1</version>
+</dependency>
 </dependencies>
 <build>
   <plugins>

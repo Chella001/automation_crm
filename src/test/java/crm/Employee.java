@@ -121,12 +121,12 @@ public class Employee extends crmDriver {
 					util.enterTextById("date_of_join", Doj);
 
 					util.clickByXpath("//*[@id=\"emp_join\"]/div/div[1]/div[2]/div[7]/div/span/span[1]/span/span[2]");
-					util.enterTextByXpath("/html/body/span/span/span[1]/input", Department);
-					driver.findElement(By.xpath("/html/body/span/span/span[1]/input")).sendKeys(Keys.ENTER);
+					util.enterTextByXpath("//input[@class='select2-search__field']", Department);
+					driver.findElement(By.xpath("//input[@class='select2-search__field']")).sendKeys(Keys.ENTER);
 
 					util.clickByXpath("//*[@id=\"emp_join\"]/div/div[1]/div[2]/div[8]/div/span/span[1]/span/span[2]");
-					util.enterTextByXpath("/html/body/span/span/span[1]/input", Designation);
-					driver.findElement(By.xpath("/html/body/span/span/span[1]/input")).sendKeys(Keys.ENTER);
+					util.enterTextByXpath("//input[@class='select2-search__field']", Designation);
+					driver.findElement(By.xpath("//input[@class='select2-search__field']")).sendKeys(Keys.ENTER);
 
 					if (Active.equalsIgnoreCase("No")) {
 						util.clickByXpath("//*[@id=\"emp_join\"]/div/div[1]/div[2]/div[9]/div/div/div/div/span[2]");
@@ -139,19 +139,19 @@ public class Employee extends crmDriver {
 					util.enterTextById("address3", add3);
 
 					util.clickByXpath(" //*[@id=\"emp_join\"]/div/div[2]/div[2]/div[1]/span/span[1]/span/span[2]");
-					util.enterTextByXpath("/html/body/span/span/span[1]/input", Country);
+					util.enterTextByXpath("//input[@class='select2-search__field']", Country);
 
-					driver.findElement(By.xpath("/html/body/span/span/span[1]/input"))
+					driver.findElement(By.xpath("//input[@class='select2-search__field']"))
 							.sendKeys(Keys.ARROW_DOWN);
-					driver.findElement(By.xpath("/html/body/span/span/span[1]/input")).sendKeys(Keys.ENTER);
+					driver.findElement(By.xpath("//input[@class='select2-search__field']")).sendKeys(Keys.ENTER);
 
 					util.clickByXpath("//*[@id=\"emp_join\"]/div/div[2]/div[2]/div[2]/span/span[1]/span/span[2]");
-					util.enterTextByXpath("/html/body/span/span/span[1]/input", State);
-					driver.findElement(By.xpath("/html/body/span/span/span[1]/input")).sendKeys(Keys.ENTER);
+					util.enterTextByXpath("//input[@class='select2-search__field']", State);
+					driver.findElement(By.xpath("//input[@class='select2-search__field']")).sendKeys(Keys.ENTER);
 
 					util.clickByXpath("//*[@id=\"emp_join\"]/div/div[2]/div[2]/div[3]/span/span[1]/span/span[2]");
-					util.enterTextByXpath("/html/body/span/span/span[1]/input", City);
-					driver.findElement(By.xpath("/html/body/span/span/span[1]/input")).sendKeys(Keys.ENTER);
+					util.enterTextByXpath("//input[@class='select2-search__field']", City);
+					driver.findElement(By.xpath("//input[@class='select2-search__field']")).sendKeys(Keys.ENTER);
 
 					util.enterTextByXpath("(//input[@id='phone'])[2]", Phone);
 
@@ -169,8 +169,8 @@ public class Employee extends crmDriver {
 					util.enterTextByXpath("//*[@id=\"passwd\"]", Password);
 
 					util.clickById("select2-profile-container");
-					util.enterTextByXpath("/html/body/span/span/span[1]/input", userType);
-					driver.findElement(By.xpath("/html/body/span/span/span[1]/input")).sendKeys(Keys.ENTER);
+					util.enterTextByXpath("//input[@class='select2-search__field']", userType);
+					driver.findElement(By.xpath("//input[@class='select2-search__field']")).sendKeys(Keys.ENTER);
 
 					if (Branch != null && !Branch.isEmpty()) {
 
@@ -232,12 +232,14 @@ public class Employee extends crmDriver {
 							util.clearAndType(By.id("emp_code"), editEmpCode);
 
 							util.clickByXpath("//*[@id=\"select2-dept-container\"]");
-							util.enterTextByXpath("/html/body/span/span/span[1]/input", editDepartment);
-							driver.findElement(By.xpath("/html/body/span/span/span[1]/input")).sendKeys(Keys.ENTER);
+							util.enterTextByXpath("//input[@class='select2-search__field']", editDepartment);
+							driver.findElement(By.xpath("//input[@class='select2-search__field']"))
+									.sendKeys(Keys.ENTER);
 
 							util.clickByXpath("//*[@id=\"select2-designation-container\"]");
-							util.enterTextByXpath("/html/body/span/span/span[1]/input", editDesignation);
-							driver.findElement(By.xpath("/html/body/span/span/span[1]/input")).sendKeys(Keys.ENTER);
+							util.enterTextByXpath("//input[@class='select2-search__field']", editDesignation);
+							driver.findElement(By.xpath("//input[@class='select2-search__field']"))
+									.sendKeys(Keys.ENTER);
 
 							util.clearAndType(By.xpath("(//label[contains(.,'User name *')]/following::input)[1]"),
 									editUserName);
